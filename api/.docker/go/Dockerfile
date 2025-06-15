@@ -15,6 +15,12 @@ RUN go install \
 RUN go install \
       google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      protobuf-compiler \
+      libprotobuf-dev && \
+    rm -rf /var/lib/apt/lists/*
+
 # PATH にバイナリを載せる
 ENV PATH="$PATH:$(go env GOPATH)/bin"
 
