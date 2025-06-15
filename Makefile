@@ -28,7 +28,7 @@ gen-proto:
         protoc -I proto \
           --go_out=gen/api \
           --go_opt=paths=source_relative \
-          --go-grpc_out=api \
+          --go-grpc_out=gen/api \
           --go-grpc_opt=paths=source_relative \
           proto/*.proto
 
