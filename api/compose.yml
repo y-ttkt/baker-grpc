@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .. # protoディレクトリも含めるため1段階上の階層を指定
+      dockerfile: "api/.docker/go/Dockerfile"
+    container_name: "baker-api-server"
+    stdin_open: true
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - "..:/app"
+
+  mysql:
+    build:
+      context: .
+      dockerfile: ".docker/mysql/Dockerfile"
+    container_name: "baker-api-server-mysql"
+    platform: linux/x86_64
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: $DB_DATABASE
+      MYSQL_USER: $DB_USERNAME
+      MYSQL_PASSWORD: $DB_PASSWORD
+      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+    volumes:
+      - ".docker/mysql/my.cnf:/etc/mysql/my.cnf"
+      - ".mysql:/var/lib/mysql"
