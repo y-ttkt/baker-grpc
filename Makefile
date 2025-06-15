@@ -26,9 +26,9 @@ gen-proto:
 	@echo ">>> Generating Go code from .proto files in container…"
 	$(COMPOSE_API) exec app bash\
         protoc -I proto \
-          --go_out=gen/api \
+          --go_out=api/gen/api \
           --go_opt=paths=source_relative \
-          --go-grpc_out=gen/api \
+          --go-grpc_out=api/gen/api \
           --go-grpc_opt=paths=source_relative \
           proto/*.proto
 
