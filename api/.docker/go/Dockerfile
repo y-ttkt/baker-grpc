@@ -24,8 +24,7 @@ RUN apt-get update && \
 # PATH にバイナリを載せる
 ENV PATH="$PATH:$(go env GOPATH)/bin"
 
-WORKDIR /app
+WORKDIR /app/api
 
 COPY api/go.mod  ./
-COPY proto/ ./proto
 RUN go mod download
