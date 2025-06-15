@@ -1,26 +1,36 @@
 COMPOSE_API = docker compose -f api/compose.yml
 
-.PHONY: api-build api-up api-down api-shell api-logs
+.PHONY: api-build api-up api-down api-shell api-logs gen-proto
 
-api-build:
+build:
 	@echo ">>> Building API image…"
 	$(COMPOSE_API) build
 
-api-up:
+up:
 	@echo ">>> Starting API container…"
 	$(COMPOSE_API) up -d
 
-api-down:
+down:
 	@echo ">>> Stopping API container…"
 	$(COMPOSE_API) down
 
-api-shell:
+shell:
 	@echo ">>> Opening shell into API container…"
 	$(COMPOSE_API) exec app bash
 
-api-logs:
+logs:
 	@echo ">>> Tailing logs for API…"
 	$(COMPOSE_API) logs -f
+
+gen-proto:
+	@echo ">>> Generating Go code from .proto files in container…"
+	$(COMPOSE_API) exec app bash\
+        protoc -I proto \
+          --go_out=gen/api \
+          --go_opt=paths=source_relative \
+          --go-grpc_out=api \
+          --go-grpc_opt=paths=source_relative \
+          proto/*.proto
 
 # ── Rails クライアントの操作例 ─────────────────
 # .PHONY: client-up client-down client-shell
