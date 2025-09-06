@@ -24,13 +24,15 @@ logs:
 
 gen-proto:
 	@echo ">>> Generating Go code from .proto files in container…"
-	$(COMPOSE_API) exec app bash\
-        protoc -I proto \
-          --go_out=api/gen/api \
-          --go_opt=paths=source_relative \
-          --go-grpc_out=api/gen/api \
-          --go-grpc_opt=paths=source_relative \
-          proto/*.proto
+	$(COMPOSE_API) exec app bash -lc '\
+	  cd /app/api && \
+	  protoc \
+	    -I ../proto \
+	    -I /usr/include \
+	    --go_out=gen/api --go_opt=paths=source_relative \
+	    --go-grpc_out=gen/api --go-grpc_opt=paths=source_relative \
+	    ../proto/*.proto \
+	'
 
 # ── Rails クライアントの操作例 ─────────────────
 # .PHONY: client-up client-down client-shell
