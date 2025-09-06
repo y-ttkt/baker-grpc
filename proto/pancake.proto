@@ -32,7 +32,9 @@ message Pancake {
 
   float technical_score = 3;
 
-  google.protobuf.Timestamp create_time = 4;
+  reserved 4;
+
+  google.protobuf.Timestamp create_time = 15;
 }
 
 //Reportはどのくらいパンケーキを焼いたかについての報告書を表します
