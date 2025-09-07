@@ -65,3 +65,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "grpc", "~> 1.73"
+gem "grpc-tools", "~> 1.74"

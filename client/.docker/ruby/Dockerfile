@@ -7,7 +7,7 @@ RUN apt-get update -qq \
 
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock ./
+COPY ./client/Gemfile ./client/Gemfile.lock ./
 
 RUN bundle install
 

@@ -61,3 +61,11 @@ client-logs:
 client-rails:
 	@echo ">>> Running Rails server (foreground)…"
 	$(COMPOSE_CLIENT) run --rm --service-ports web bash -lc "bundle exec rails server -b 0.0.0.0 -p 3000"
+
+gen-proto-client:
+	@echo ">>> Generating code from .proto files in container…"
+	$(COMPOSE_API) exec app bash -lc '\
+	  bundle exec grpc_tools_ruby_protoc \                                                                                                    -I ../proto \
+      --ruby_out=../api/gen/api/pancake/maker \
+      --grpc_out=../api/gen/api/pancake/maker \
+      ../proto/pancake.proto'

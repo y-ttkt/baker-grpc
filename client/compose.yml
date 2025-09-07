@@ -1,11 +1,12 @@
 services:
   app:
     build:
-      context: .
-      dockerfile: ".docker/ruby/Dockerfile"
+      context: .. # protoディレクトリも含めるため1段階上の階層を指定
+      dockerfile: "client/.docker/ruby/Dockerfile"
     container_name: grpc-client
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
+      - ../:/app                        # ★ src 直下すべてを /app にマウント
+    working_dir: /app/client
     command: bash -lc "bundle install && bundle exec rails s -b 0.0.0.0 -p 3000"
