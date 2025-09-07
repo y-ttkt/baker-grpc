@@ -6,15 +6,11 @@ option go_package = "gen/api";
 import "google/protobuf/timestamp.proto";
 
 service PancakeBakerService {
-  // Bakeは指定されたメニューのパンケーキを焼くメソッドです。
-  // 焼かれたパンケーキをレスポンスとして返します。
   rpc Bake(BakeRequest) returns (BakeResponse) {}
 
-  // Reportはメニューごとに焼いたパンケーキの数を返します
   rpc Report(ReportRequest) returns (ReportResponse) {}
 }
 
-//Pancakeは一枚一枚の焼かれたパンケーキを表します。
 message Pancake {
   enum Menu {
     UNKNOWN = 0;
@@ -37,7 +33,6 @@ message Pancake {
   google.protobuf.Timestamp create_time = 15;
 }
 
-//Reportはどのくらいパンケーキを焼いたかについての報告書を表します
 message Report {
   message BakeCount {
     Pancake.Menu menu = 1;
