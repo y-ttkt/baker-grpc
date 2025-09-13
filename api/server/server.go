@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"github.com/y-ttkt/baker/gen/api"
 	"github.com/y-ttkt/baker/handler"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapgrpc"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
@@ -19,6 +22,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
+	zapLogger, err := zap.NewProduction()
+	if err != nil {
+		log.Fatalf("failed to init zap logger: %v", err)
+	}
+
+	grpclog.SetLoggerV2(zapgrpc.NewLogger(zapLogger))
 
 	server := grpc.NewServer()
 	api.RegisterPancakeBakerServiceServer(
