@@ -9,6 +9,8 @@ require (
 )
 
 require (
+	github.com/grpc-ecosystem/go-grpc-middleware/providers/zap/v2 v2.0.0-rc.3 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/net v0.35.0 // indirect

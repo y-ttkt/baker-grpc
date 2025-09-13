@@ -2,7 +2,9 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/y-ttkt/baker/gen/api"
 	"github.com/y-ttkt/baker/handler"
 	"go.uber.org/zap"
@@ -30,7 +32,11 @@ func main() {
 
 	grpclog.SetLoggerV2(zapgrpc.NewLogger(zapLogger))
 
-	server := grpc.NewServer()
+	server := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			logging.UnaryServerInterceptor(zapLoggerAdapter(zapLogger)),
+		),
+	)
 	api.RegisterPancakeBakerServiceServer(
 		server,
 		handler.NewBakerHandler(),
@@ -48,4 +54,35 @@ func main() {
 	<-quit
 	log.Println("stopping gRPC server...")
 	server.GracefulStop()
+}
+
+func zapLoggerAdapter(l *zap.Logger) logging.Logger {
+	// logging.Logger は関数型 LoggerFunc でも実装できます
+	return logging.LoggerFunc(func(ctx context.Context, lvl logging.Level, msg string, fields ...any) {
+		// Interceptor が渡してくる fields と、Context に入っているフィールドを統合
+		all := append(logging.ExtractFields(ctx), fields...)
+
+		// []any（key, val, key, val, ...）→ []zap.Field に変換
+		zfs := make([]zap.Field, 0, len(all)/2)
+		for i := 0; i+1 < len(all); i += 2 {
+			k, ok := all[i].(string)
+			if !ok {
+				continue
+			}
+			zfs = append(zfs, zap.Any(k, all[i+1]))
+		}
+
+		switch lvl {
+		case logging.LevelDebug:
+			l.Debug(msg, zfs...)
+		case logging.LevelInfo:
+			l.Info(msg, zfs...)
+		case logging.LevelWarn:
+			l.Warn(msg, zfs...)
+		case logging.LevelError:
+			l.Error(msg, zfs...)
+		default:
+			l.Info(msg, zfs...)
+		}
+	})
 }
