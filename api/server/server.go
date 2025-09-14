@@ -41,6 +41,10 @@ func main() {
 		server,
 		handler.NewBakerHandler(),
 	)
+	api.RegisterImageUploadServiceServer(
+		server,
+		handler.NewImageUploadHandler(),
+	)
 
 	reflection.Register(server)
 
