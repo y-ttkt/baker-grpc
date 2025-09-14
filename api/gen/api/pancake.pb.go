@@ -82,7 +82,6 @@ func (Pancake_Menu) EnumDescriptor() ([]byte, []int) {
 	return file_pancake_proto_rawDescGZIP(), []int{0, 0}
 }
 
-// Pancakeは一枚一枚の焼かれたパンケーキを表します。
 type Pancake struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -154,7 +153,6 @@ func (x *Pancake) GetCreateTime() *timestamppb.Timestamp {
 	return nil
 }
 
-// Reportはどのくらいパンケーキを焼いたかについての報告書を表します
 type Report struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

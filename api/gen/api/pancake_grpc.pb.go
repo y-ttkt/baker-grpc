@@ -27,10 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PancakeBakerServiceClient interface {
-	// Bakeは指定されたメニューのパンケーキを焼くメソッドです。
-	// 焼かれたパンケーキをレスポンスとして返します。
 	Bake(ctx context.Context, in *BakeRequest, opts ...grpc.CallOption) (*BakeResponse, error)
-	// Reportはメニューごとに焼いたパンケーキの数を返します
 	Report(ctx context.Context, in *ReportRequest, opts ...grpc.CallOption) (*ReportResponse, error)
 }
 
@@ -66,10 +63,7 @@ func (c *pancakeBakerServiceClient) Report(ctx context.Context, in *ReportReques
 // All implementations must embed UnimplementedPancakeBakerServiceServer
 // for forward compatibility.
 type PancakeBakerServiceServer interface {
-	// Bakeは指定されたメニューのパンケーキを焼くメソッドです。
-	// 焼かれたパンケーキをレスポンスとして返します。
 	Bake(context.Context, *BakeRequest) (*BakeResponse, error)
-	// Reportはメニューごとに焼いたパンケーキの数を返します
 	Report(context.Context, *ReportRequest) (*ReportResponse, error)
 	mustEmbedUnimplementedPancakeBakerServiceServer()
 }
